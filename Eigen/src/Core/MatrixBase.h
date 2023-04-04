@@ -252,6 +252,10 @@ template<typename Derived> class MatrixBase
     { return lazyAssign(other._expression()); }
 #endif // not EIGEN_PARSED_BY_DOXYGEN
 
+    // 这是很有意思的操作，接口定义
+    // m << 1, 2, 3, 4;
+    // m中将会有1，2，3，4
+    // << 操作符返回一个特别的类：CommaInitializer，然后后面take ","操作符，直到遇到";"结束。
     CommaInitializer<Derived> operator<< (const Scalar& s);
 
     template<typename OtherDerived>

@@ -51,7 +51,10 @@
   */
 inline void* ei_handmade_aligned_malloc(size_t size)
 {
-  void *original = malloc(size+16);
+  void *original = malloc(size+16);  // 返回的指针最小会align到8个字节边界
+  // 先align down 到16个字节边界，然后再align up到16个字节边界
+  // 如果original已经是align到16个字节边界，那么aligned将会是第2个16字节
+  // 接下来会在第二个16字节边界处往前8个字节处存储原始个8字节指针
   void *aligned = reinterpret_cast<void*>((reinterpret_cast<size_t>(original) & ~(size_t(15))) + 16);
   *(reinterpret_cast<void**>(aligned) - 1) = original;
   return aligned;
@@ -232,7 +235,7 @@ inline static int ei_alignmentOffset(const Scalar* ptr, int maxOffset)
 #define ei_aligned_stack_delete(TYPE,PTR,SIZE) do {ei_delete_elements_of_array<TYPE>(PTR, SIZE); \
                                                    ei_aligned_stack_free(PTR,sizeof(TYPE)*SIZE);} while(0)
 
-    
+
 /** \brief Overloads the operator new and delete of the class Type with operators that are aligned if NeedsToAlign is true
   *
   * When Eigen's explicit vectorization is enabled, Eigen assumes that some fixed sizes types are aligned
@@ -317,34 +320,34 @@ public:
         typedef aligned_allocator<U> other;
     };
 
-    pointer address( reference value ) const 
+    pointer address( reference value ) const
     {
         return &value;
     }
 
-    const_pointer address( const_reference value ) const 
+    const_pointer address( const_reference value ) const
     {
         return &value;
     }
 
-    aligned_allocator() throw() 
+    aligned_allocator() throw()
     {
     }
 
-    aligned_allocator( const aligned_allocator& ) throw() 
+    aligned_allocator( const aligned_allocator& ) throw()
     {
     }
 
     template<class U>
-    aligned_allocator( const aligned_allocator<U>& ) throw() 
+    aligned_allocator( const aligned_allocator<U>& ) throw()
     {
     }
 
-    ~aligned_allocator() throw() 
+    ~aligned_allocator() throw()
     {
     }
 
-    size_type max_size() const throw() 
+    size_type max_size() const throw()
     {
         return std::numeric_limits<size_type>::max();
     }
@@ -355,17 +358,17 @@ public:
         return static_cast<pointer>( ei_aligned_malloc( num * sizeof(T) ) );
     }
 
-    void construct( pointer p, const T& value ) 
+    void construct( pointer p, const T& value )
     {
         ::new( p ) T( value );
     }
 
-    void destroy( pointer p ) 
+    void destroy( pointer p )
     {
         p->~T();
     }
 
-    void deallocate( pointer p, size_type /*num*/ ) 
+    void deallocate( pointer p, size_type /*num*/ )
     {
         ei_aligned_free( p );
     }

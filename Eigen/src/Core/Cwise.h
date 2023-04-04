@@ -76,10 +76,12 @@ template<typename ExpressionType> class Cwise
   public:
 
     typedef typename ei_traits<ExpressionType>::Scalar Scalar;
+    // conditional_if
     typedef typename ei_meta_if<ei_must_nest_by_value<ExpressionType>::ret,
         ExpressionType, const ExpressionType&>::ret ExpressionTypeNested;
     typedef CwiseUnaryOp<ei_scalar_add_op<Scalar>, ExpressionType> ScalarAddReturnType;
 
+    // 可直接隐式转换，从一个matrix到cwise类型
     inline Cwise(const ExpressionType& matrix) : m_matrix(matrix) {}
 
     /** \internal */
@@ -93,6 +95,7 @@ template<typename ExpressionType> class Cwise
     const EIGEN_CWISE_BINOP_RETURN_TYPE(ei_scalar_quotient_op)
     operator/(const MatrixBase<OtherDerived> &other) const;
 
+    // 两个matrix对应元素的最小值/最大值
     template<typename OtherDerived>
     const EIGEN_CWISE_BINOP_RETURN_TYPE(ei_scalar_min_op)
     min(const MatrixBase<OtherDerived> &other) const;
@@ -191,7 +194,7 @@ template<typename Derived>
 inline const Cwise<Derived>
 MatrixBase<Derived>::cwise() const
 {
-  return derived();
+  return derived();  // 隐式转换成一个新的cwise类型
 }
 
 /** \returns a Cwise wrapper of *this providing additional coefficient-wise operations

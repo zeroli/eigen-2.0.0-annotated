@@ -71,6 +71,7 @@ template<typename T, int Size, int _Rows, int _Cols, int _Options> class ei_matr
 // purely fixed-size matrix
 template<typename T, int Size, int _Rows, int _Cols, int _Options> class ei_matrix_storage
 {
+    // 已知大小，分配在栈上
     ei_matrix_array<T,Size,_Options> m_data;
   public:
     inline explicit ei_matrix_storage() {}
@@ -88,6 +89,7 @@ template<typename T, int Size, int _Rows, int _Cols, int _Options> class ei_matr
 // dynamic-size matrix with fixed-size storage
 template<typename T, int Size, int _Options> class ei_matrix_storage<T, Size, Dynamic, Dynamic, _Options>
 {
+    // 总的大小已知，行与列动态变化，分配在栈上
     ei_matrix_array<T,Size,_Options> m_data;
     int m_rows;
     int m_cols;
@@ -157,7 +159,7 @@ template<typename T, int Size, int _Rows, int _Options> class ei_matrix_storage<
 // purely dynamic matrix.
 template<typename T, int _Options> class ei_matrix_storage<T, Dynamic, Dynamic, Dynamic, _Options>
 {
-    T *m_data;
+    T *m_data;  // 分配在堆上，大小不固定
     int m_rows;
     int m_cols;
   public:

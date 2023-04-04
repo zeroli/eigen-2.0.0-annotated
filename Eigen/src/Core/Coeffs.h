@@ -25,6 +25,7 @@
 #ifndef EIGEN_COEFFS_H
 #define EIGEN_COEFFS_H
 
+// 这个文件是实现MatrixBase类定义的访问特定位置元素的接口函数
 /** Short version: don't use this function, use
   * \link operator()(int,int) const \endlink instead.
   *

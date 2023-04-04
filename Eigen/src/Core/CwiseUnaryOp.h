@@ -56,6 +56,7 @@ struct ei_traits<CwiseUnaryOp<UnaryOp, MatrixType> >
   };
 };
 
+// cwise unary op继承于MatrixBase顶层类
 template<typename UnaryOp, typename MatrixType>
 class CwiseUnaryOp : ei_no_assignment_operator,
   public MatrixBase<CwiseUnaryOp<UnaryOp, MatrixType> >
@@ -127,6 +128,7 @@ MatrixBase<Derived>::operator-() const
   return derived();
 }
 
+// 都只是返回一个包装类型，并不进行运算，直到赋值，或者显示求值
 /** \returns an expression of the coefficient-wise absolute value of \c *this
   *
   * Example: \include Cwise_abs.cpp
@@ -216,7 +218,7 @@ template<typename Derived>
 EIGEN_STRONG_INLINE Derived&
 MatrixBase<Derived>::operator*=(const Scalar& other)
 {
-  return *this = *this * other;
+  return *this = *this * other;  // 这里有赋值操作，应该会进行表达式评估
 }
 
 template<typename Derived>

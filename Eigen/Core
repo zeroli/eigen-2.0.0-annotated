@@ -12,7 +12,7 @@
       #if _M_IX86_FP >= 2
         #define EIGEN_SSE2_ON_MSVC_2008_OR_LATER
       #endif
-    #endif   
+    #endif
   #endif
 #endif
 
@@ -30,7 +30,7 @@
 #ifndef EIGEN_DONT_VECTORIZE
   #if defined (EIGEN_SSE2_BUT_NOT_OLD_GCC) || defined(EIGEN_SSE2_ON_MSVC_2008_OR_LATER)
     #define EIGEN_VECTORIZE
-    #define EIGEN_VECTORIZE_SSE
+    #define EIGEN_VECTORIZE_SSE  // SSE: 128bits vectorize, 4x floats(32 bits)
     #include <emmintrin.h>
     #include <xmmintrin.h>
     #ifdef __SSE3__

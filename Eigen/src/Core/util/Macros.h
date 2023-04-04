@@ -36,6 +36,7 @@
                                       (EIGEN_MAJOR_VERSION>y || (EIGEN_MAJOR_VERSION>=y && \
                                                                  EIGEN_MINOR_VERSION>=z))))
 
+// column major是默认的存储方式
 #ifdef EIGEN_DEFAULT_TO_ROW_MAJOR
 #define EIGEN_DEFAULT_MATRIX_STORAGE_ORDER_OPTION RowMajor
 #else
@@ -193,6 +194,7 @@ EIGEN_INHERIT_ASSIGNMENT_OPERATOR(Derived, +=) \
 EIGEN_INHERIT_ASSIGNMENT_OPERATOR(Derived, -=) \
 EIGEN_INHERIT_SCALAR_ASSIGNMENT_OPERATOR(Derived, *=) \
 EIGEN_INHERIT_SCALAR_ASSIGNMENT_OPERATOR(Derived, /=)
+// 定义一些赋值操作符，scalar multiplication/devision
 
 #define _EIGEN_GENERIC_PUBLIC_INTERFACE(Derived, BaseClass) \
 typedef BaseClass Base; \
@@ -209,6 +211,7 @@ enum { RowsAtCompileTime = Eigen::ei_traits<Derived>::RowsAtCompileTime, \
        SizeAtCompileTime = Base::SizeAtCompileTime, \
        MaxSizeAtCompileTime = Base::MaxSizeAtCompileTime, \
        IsVectorAtCompileTime = Base::IsVectorAtCompileTime };
+// 以上是在编译期萃取些特性
 
 #define EIGEN_GENERIC_PUBLIC_INTERFACE(Derived) \
 _EIGEN_GENERIC_PUBLIC_INTERFACE(Derived, Eigen::MatrixBase<Derived>)

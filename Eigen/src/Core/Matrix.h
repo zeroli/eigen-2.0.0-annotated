@@ -118,6 +118,7 @@ struct ei_traits<Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> >
   };
 };
 
+// Matrix继承于MatrixBase，将自己作为父类的模板参数，这是CRTP技术，实现静态多态
 template<typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
 class Matrix
   : public MatrixBase<Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> >
@@ -131,6 +132,8 @@ class Matrix
     typedef class Eigen::Map<Matrix, Aligned> AlignedMapType;
 
   protected:
+    // 只有一个成员，matrix数据的存储空间
+    // 如果大小编译期已知，内存分配在栈上，类似于std::array<T, N>
     ei_matrix_storage<Scalar, MaxSizeAtCompileTime, RowsAtCompileTime, ColsAtCompileTime, Options> m_storage;
 
   public:
@@ -539,6 +542,7 @@ class Matrix
   * \sa class Matrix
   */
 
+// 下面是定义一些常见的Matrix和Vector类型：Matrix4d, Vector3i, RowVector4f
 #define EIGEN_MAKE_TYPEDEFS(Type, TypeSuffix, Size, SizeSuffix)   \
 /** \ingroup matrixtypedefs */                                    \
 typedef Matrix<Type, Size, Size> Matrix##SizeSuffix##TypeSuffix;  \

@@ -115,7 +115,7 @@ class WithFormat
 template<typename Derived>
 inline const WithFormat<Derived>
 MatrixBase<Derived>::format(const IOFormat& fmt) const
-{
+{  // 产生不同format的matrix打印
   return WithFormat<Derived>(derived(), fmt);
 }
 
